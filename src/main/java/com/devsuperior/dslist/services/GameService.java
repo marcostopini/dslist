@@ -4,8 +4,9 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import com.devsuperior.dslist.dto.GameMinDTO;
+import com.devsuperior.dslist.dto.GameDTO;
 import com.devsuperior.dslist.entities.Game;
 import com.devsuperior.dslist.repositories.GameRepository;
 
@@ -18,7 +19,15 @@ public class GameService {
 	@Autowired
 	private GameRepository gameRepository;
 	
+	@Transactional(readOnly = true)
+	public GameDTO findById(Long gameId) {
+	  Game result = gameRepository.findById(gameId).get();
+	  GameDTO dto = new GameDTO(result);
+	  return dto; 
+	}
+	
 	// Devolve uma lista do tipo DTO
+	@Transactional(readOnly = true)
 	public List<Game> findAll(){
       // O findAll() trazer do banco de dados uma lista de games. Faz uma consulta no banco de 
 	  //dados para buscar no banco de dados todos os games
